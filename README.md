@@ -494,21 +494,152 @@ Here’s the updated markdown with the detailed hints for Domain-Specific Practi
 ---
 ---
 
+I'll convert this document into a clean markdown format:
+
 ## 6. Architectural Styles
 
 ### 6.1 Clean Architecture
-- **Layered design** – Domain, Application, Interface, Infrastructure.  
-- **Dependency Inversion** – Decouple high-level logic from low-level details.
+
+**Concept**: Focuses on separating responsibilities into layers, with the core business logic (domain) being technology-agnostic.
+
+**Layers**:
+
+1. **Domain**: Core business logic and rules, independent of technology.
+   * Example: Calculate order total and apply discounts in an e-commerce system.
+
+2. **Application**: Orchestrates use cases by coordinating domain logic and external systems.
+   * Example: "Place Order" workflow validates the cart, processes payment, and creates the order.
+
+3. **Interface**: Handles user interaction or communication with external clients.
+   * Example: REST API endpoint for users to submit an order.
+
+4. **Infrastructure**: Manages technical details like databases, APIs, and frameworks.
+   * Example: Database setup for storing orders or integration with payment gateways.
+
+#### Example File Structure:
+
+```
+src/
+├── domain/
+│   ├── entities/
+│   │   ├── Order.py
+│   │   ├── Customer.py
+│   ├── value_objects/
+│   │   ├── Money.py
+│   ├── policies/
+│   │   ├── DiscountPolicy.py
+│   └── validators/
+│       ├── OrderValidator.py
+├── application/
+│   ├── use_cases/
+│   │   ├── PlaceOrderUseCase.py
+│   │   ├── TransferMoneyUseCase.py
+│   ├── services/
+│       ├── PaymentService.py
+│       ├── NotificationService.py
+├── interface/
+│   ├── controllers/
+│   │   ├── OrderController.py
+│   │   ├── CustomerController.py
+│   ├── views/
+│       ├── OrderView.html
+│       ├── CustomerProfileView.html
+├── infrastructure/
+│   ├── repositories/
+│   │   ├── OrderRepositoryImpl.py
+│   │   ├── CustomerRepositoryImpl.py
+│   ├── adapters/
+│   │   ├── PaymentGatewayAdapter.py
+│   │   ├── EmailServiceAdapter.py
+│   ├── config/
+│       ├── DatabaseConfig.py
+│       ├── AppConfig.py
+```
 
 ### 6.2 Domain-Driven Design (DDD)
-- **Entities and Value Objects**  
-- **Aggregates and Repositories**  
-- **Bounded Contexts**  
-- **Ubiquitous Language**
+
+**Concept**: Focuses on designing software that mirrors the business domain closely.
+
+**Key Elements**:
+
+1. **Entities and Value Objects**: Represent domain concepts with a clear identity or immutable value.
+   * Example: An Order entity with Money as a value object for prices.
+
+2. **Aggregates and Repositories**: Group related entities and provide access to them.
+   * Example: OrderRepository manages CRUD operations for orders.
+
+3. **Bounded Contexts**: Divide the system into independent, domain-specific areas.
+   * Example: Separate contexts for Inventory and Billing.
+
+4. **Ubiquitous Language**: Use shared terminology across code and stakeholders.
+   * Example: Everyone refers to "Order Total" the same way in discussions and in code.
+
+*Note: File structure similar to Clean Architecture, with emphasis on business logic over technical concerns.*
 
 ### 6.3 Hexagonal Architecture (Ports and Adapters)
-- **Decoupling core logic** from external systems.  
-- **Flexible delivery mechanisms** to accommodate different interfaces.
+
+**Concept**: Decouples core business logic (domain) from external systems using ports (interfaces) and adapters (implementations).
+
+**Key Benefits**:
+1. Core logic remains testable and independent of frameworks or external systems.
+2. Adapters enable seamless integration with different delivery mechanisms (e.g., REST APIs, CLI, queues).
+
+#### Example File Structure:
+
+```
+src/
+├── domain/
+│   ├── ports/
+│   │   ├── PaymentPort.py
+├── application/
+│   ├── services/
+│   │   ├── OrderService.py
+├── infrastructure/
+│   ├── adapters/
+│   │   ├── StripeAdapter.py
+│   │   ├── PaypalAdapter.py
+```
+
+### 6.4 Event-Driven Architecture
+
+**Concept**: Systems communicate via events instead of direct calls.
+
+**Key Features**:
+1. **Publish-Subscribe Pattern**: Producers emit events; consumers act on them.
+2. **Scalability**: Loosely coupled components improve scalability.
+3. **Example**: An e-commerce system where the order service emits an "OrderPlaced" event consumed by the inventory and notification services.
+
+### 6.5 Microservices Architecture
+
+**Concept**: Decomposes the system into small, independently deployable services.
+
+**Key Features**:
+1. **Service Boundaries**: Each service handles a single business capability.
+2. **Inter-Service Communication**: Uses REST APIs, gRPC, or message brokers like Kafka.
+3. **Example**: A UserService manages user profiles, while a PaymentService handles transactions.
+
+### 6.6 Monolithic Architecture
+
+**Concept**: All components reside in a single deployable unit.
+
+* **Advantages**: Simple development and deployment for small systems.
+* **Challenges**: Difficult to scale and maintain as complexity grows.
+
+### 6.7 Client-Server Architecture
+
+**Concept**: Separation of roles between client (user-facing) and server (data and logic).
+* Example: A web application where the browser (client) communicates with the backend (server).
+
+### 6.8 Layered Architecture
+
+**Concept**: Divides the system into layers such as Presentation, Business Logic, and Data Access.
+* Example: MVC frameworks often follow this style.
+
+### Why Architectural Styles Matter
+
+1. **Adaptability**: Choose the right style based on system needs (e.g., scalability, fault tolerance).
+2. **Combination**: Many systems use hybrid architectures (e.g., Microservices + Event-Driven).
+3. **Clarity**: Consistent layering and separation of concerns improve maintainability.
 
 ---
 
