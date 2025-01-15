@@ -261,38 +261,237 @@ Use modeling tools to represent and visualize your design for better clarity and
 > **Pro Tip**: Always validate your design with real-world scenarios, prototypes, or test cases before implementation. Focus on making the design extensible and maintainable for long-term success.
 
 ---
+Here’s the updated markdown with the detailed hints for Domain-Specific Practices:
 
 ## 5. Domain-Specific Practices
 
 ### 5.1 E-Commerce and Payment Systems
-- **Design an Amazon-like marketplace**  
-- **Design Splitwise** (including the Simplify Algorithm)  
-- **Design Payment Systems**  
-- **Design Food Delivery App** (e.g., Swiggy, Zomato)
+
+#### **Design an Amazon-like Marketplace**
+- **Catalog and Inventory**
+  - How to store product details (name, price, description) and maintain inventory counts.
+  - Handling large-scale searches (e.g., indexing, caching, product recommendations).
+- **Shopping Cart and Order Management**
+  - Managing concurrent modifications to a cart, especially with promotions or limited stock.
+  - Handling order lifecycles: created → paid → shipped → delivered → returned/refunded.
+- **Payments and Checkout**
+  - Payment gateway integrations (credit cards, digital wallets).
+  - Secure handling of payment data and PCI compliance; transaction retries and idempotency.
+- **User Accounts and Authentication**
+  - Session management, OAuth, or token-based auth (e.g., JWT).
+  - Wishlist, order history, and user preferences.
+- **Scalability and Performance**
+  - Load balancing and caching strategies (CDN for static content).
+  - Database partitioning and indexing for product searches.
+
+#### **Design Splitwise** (including the Simplify Algorithm)
+- **Data Modeling**
+  - Representing expenses, users, groups, and shares for each expense.
+  - Handling different currencies and exchange rates if needed.
+- **Expense Sharing and Balancing**
+  - Tracking who owes whom and simplifying outstanding balances (Simplify Algorithm).
+  - Ensuring accurate rounding and avoiding floating-point inaccuracies.
+- **Concurrency and Consistency**
+  - Preventing conflicts when multiple users update expenses concurrently.
+  - Ensuring consistency in the final ledger.
+- **Notifications and Activity Feeds**
+  - Real-time updates on new expenses, settled amounts, or changes in group splits.
+- **Security and Auditing**
+  - Secure handling of sensitive payment details.
+  - Maintaining an audit log of changes for transparency.
+
+#### **Design Payment Systems**
+- **Payment Flow and Gateways**
+  - Steps for authorization, capture, and settlement.
+  - Supporting multiple gateways (e.g., PayPal, Stripe) and fallback mechanisms.
+- **Security and Compliance**
+  - PCI-DSS requirements, tokenization of card details, and encryption.
+  - Fraud detection measures (e.g., velocity checks, suspicious activity alerts).
+- **Idempotency and Error Handling**
+  - Unique transaction IDs to avoid duplicate charges.
+  - Handling network failures, timeouts, and partial payments.
+- **Ledger and Reconciliation**
+  - Maintaining a reliable record of transactions for auditing.
+  - Reconciling with external banking systems or payment gateways.
+- **Refunds and Chargebacks**
+  - Tracking partial vs. full refunds and managing disputes.
+
+#### **Design a Food Delivery App** (e.g., Swiggy, Zomato)
+- **Restaurants and Menu Management**
+  - Handling dynamic menus, item availability, and real-time updates.
+  - Managing promotions, pricing, and personalized recommendations.
+- **Order Lifecycle**
+  - Stages: order created → payment → order accepted by restaurant → food prepared → delivery → completion.
+  - Real-time status updates and notifications to users.
+- **Delivery Logistics**
+  - Delivery agent assignment, route optimization, and real-time tracking (GPS).
+  - Concurrency with multiple orders in transit; load balancing for delivery partners.
+- **Scalability and Reliability**
+  - Handling peak hours and large traffic surges.
+  - Using caching (e.g., for popular items) and microservices for modular scaling.
+- **Payment and Refunds**
+  - Integration with multiple payment methods and handling refunds for cancelled orders.
+
+---
 
 ### 5.2 Gaming and Real-Time Systems
-- **Design Chess**  
-- **Design Snakes and Ladders**  
-- **Design an Elevator System**  
-- **Design a Traffic Light System**
+
+#### **Design Chess**
+- **Board and Pieces Representation**
+  - Data structures to model the board (2D array, list of piece objects).
+  - Representing allowed moves and special moves (castling, en-passant).
+- **Move Validation and Game Rules**
+  - Checking for check, checkmate, or stalemate conditions.
+  - Encapsulating piece-specific logic to avoid code duplication.
+- **Multiplayer and Concurrency**
+  - Real-time or turn-based gameplay; avoiding race conditions.
+  - Synchronizing game state across players.
+- **Persistence and Replay**
+  - Saving game state for resuming or reviewing moves later.
+  - Move history for undo/redo functionality.
+
+#### **Design Snakes and Ladders**
+- **Board Layout**
+  - Storing snake and ladder positions for quick lookups.
+  - Designing for scalability if board size changes.
+- **Game Mechanics**
+  - Random dice rolling and turn-based moves.
+  - Managing multiple players and ensuring smooth concurrency.
+- **State Management**
+  - Tracking player positions and verifying game end conditions.
+
+#### **Design an Elevator System**
+- **Scheduling Algorithms**
+  - Simple up/down logic or optimized scheduling (e.g., SCAN, priority queues).
+  - Handling peak vs. off-peak traffic.
+- **System State and Concurrency**
+  - Managing multiple elevators concurrently.
+  - Preventing race conditions or deadlocks.
+- **Fail-Safes and Safety Protocols**
+  - Emergency stops, overload detection, and error handling.
+
+#### **Design a Traffic Light System**
+- **State Machine**
+  - Light states (red, yellow, green) and transitions.
+  - Timers and adaptive logic based on traffic density.
+- **Concurrency and Coordination**
+  - Synchronizing multiple intersections.
+  - Preventing overlaps (two directions both green).
+- **Scalability**
+  - Supporting multiple signals across a city.
+  - Real-time monitoring and malfunction alerts.
+
+---
 
 ### 5.3 Social and Collaborative Platforms
-- **Design LinkedIn**  
-- **Design a Chat-Based System**  
-- **Design a Community Discussion Platform**
+
+#### **Design LinkedIn**
+- **User Profiles and Connections**
+  - Modeling professional data, endorsements, and recommendations.
+  - Differentiating connections, followers, and groups.
+- **Feed and Content Management**
+  - Posts, shares, comments, and relevance-based ranking.
+  - Handling real-time updates or notification feeds.
+- **Search and Indexing**
+  - Efficient searching for people, jobs, and companies.
+- **Messaging and Notifications**
+  - Real-time chat, read receipts, and alerts.
+
+#### **Design a Chat-Based System**
+- **Real-Time Messaging**
+  - WebSocket or long-polling approach for instant communication.
+  - Handling concurrency and message delivery order.
+- **Data Storage and Offline Support**
+  - Saving message history and syncing messages after reconnect.
+- **Scalability and Sharding**
+  - Partitioning chat rooms or user data for large-scale systems.
+- **Security**
+  - End-to-end encryption and spam mitigation.
+
+#### **Design a Community Discussion Platform**
+- **Threaded Discussions**
+  - Structuring posts, comments, and nested replies.
+  - Implementing moderation tools for reporting/blocking.
+- **User Reputation and Voting**
+  - Upvotes/downvotes, gamification (badges, karma).
+- **Notifications and Subscriptions**
+  - Alerts for topics or threads with batching to avoid spam.
+
+---
 
 ### 5.4 Transportation and Logistics
-- **Design a Parking Lot**  
-- **Design a Car Rental System**  
-- **Design a Car Booking Service** (e.g., Ola, Uber)  
-- **Design an Airline Management System**
+
+#### **Design a Parking Lot**
+- **Slots and Vehicle Types**
+  - Differentiating between vehicle sizes.
+  - Real-time slot availability updates.
+- **Ticketing and Payment**
+  - Entry/exit time tracking and charge calculation.
+  - Subscription-based passes or lost ticket handling.
+
+#### **Design a Car Rental System**
+- **Inventory Management**
+  - Tracking vehicle availability and maintenance schedules.
+  - Preventing double bookings.
+- **Reservation and Billing**
+  - Payment handling and handling penalties for late returns.
+- **User Management**
+  - Verifying licenses and multi-location drop-offs.
+
+#### **Design a Car Booking Service** (e.g., Ola, Uber)
+- **Real-Time Matching**
+  - GPS-based dispatch algorithms.
+  - Surge pricing and peak hour concurrency.
+- **Trip Management**
+  - Fare calculations and progress tracking.
+- **Driver and Rider Experience**
+  - Ratings, feedback loops, and safety features.
+
+#### **Design an Airline Management System**
+- **Flight Scheduling**
+  - Managing routes, timetables, and overbooking policies.
+- **Ticketing and Reservations**
+  - Fare classes, seat assignments, and multi-leg journeys.
+- **Integration with External Systems**
+  - Check-in kiosks and baggage handling.
+
+---
 
 ### 5.5 Utilities
-- **Design a “Notify-Me” Button**  
-- **Design a Logging System**  
-- **Design a Calendar Application**  
-- **Design a Rate Limiter**
 
+#### **Design a “Notify-Me” Button**
+- **User Subscription Flow**
+  - Registering for notifications and handling unsubscribes.
+- **Notification Triggers**
+  - Event-driven notifications with idempotency.
+- **Scalability**
+  - Handling spikes in notifications.
+
+#### **Design a Logging System**
+- **Data Ingestion**
+  - Collecting logs from distributed applications.
+- **Storage and Indexing**
+  - Retention policies and query efficiency.
+- **Querying and Analysis**
+  - Real-time search and alerting.
+
+#### **Design a Calendar Application**
+- **Event Creation**
+  - Managing recurring events and time zone adjustments.
+- **Reminders**
+  - Push, email, or SMS reminders with custom intervals.
+- **Collaboration**
+  - Shared calendars, invites, and conflict resolution.
+
+#### **Design a Rate Limiter**
+- **Core Algorithm**
+  - Leaky Bucket, Token Bucket, or Sliding Window techniques.
+- **Implementation**
+  - Using in-memory stores (Redis) and ensuring concurrency safety.
+- **Edge Cases**
+  - Handling rate limits being reached gracefully.
+
+---
 ---
 
 ## 6. Architectural Styles
